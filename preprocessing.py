@@ -29,7 +29,6 @@ def preprocessing(series_list, gpu, p_num, spacings=[0.8,0.9,1.0,1.1,1.2], cs=72
     df_candidates = pd.read_csv('/mnt/NAS/datasets/LuCAS-Plus/LungSegmentation/LUNA16/candidates.csv')
     for series_uid in t_bar:
         cur_df = df_candidates[df_candidates['seriesuid']==series_uid]
-        t_bar.set_description(f"P_IDX: {p_num} / {series_uid}")
         dcm_dir = pathlib.Path('/mnt/NAS/datasets/LuCAS-Plus/LungSegmentation/LUNA16/all_series')
         mhd_path = dcm_dir / f"{series_uid}.mhd"
         ct_image = sitk.ReadImage(mhd_path)
@@ -56,7 +55,6 @@ def preprocessing(series_list, gpu, p_num, spacings=[0.8,0.9,1.0,1.1,1.2], cs=72
                 patch = pad_arr[voxel_coord[0]:voxel_coord[0]+cs,
                         voxel_coord[1]:voxel_coord[1]+cs,
                         voxel_coord[2]:voxel_coord[2]+cs]
-                print(patch.dtype)
                 np.save(img_save_path / f"{'_'.join([str(x) for x in coords])}_{s}.npy", patch)
                 if cls == '1':
                     fig_3views(patch)
