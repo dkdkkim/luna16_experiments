@@ -1,5 +1,6 @@
 import cupy
 import pydicom
+import json
 import parmap
 import tqdm
 import pathlib
@@ -66,7 +67,9 @@ def main():
     gpu_n_list = (args.gpu).replace(' ','').split(',')
     pids = list(range(core_count))
     df_candidates = pd.read_csv('/mnt/NAS/datasets/LuCAS-Plus/LungSegmentation/LUNA16/candidates.csv')
-    series_uids = list(set(df_candidates['seriesuid']))
+    # series_uids = list(set(df_candidates['seriesuid']))
+    with open('/data/dk/LUNA16_crops/remain_series_uids_2.json', 'r') as file:
+        series_uids = json.load(file)
     print(f"Total series number: {len(series_uids)}")
     split_series_uids = [x.tolist() for x in np.array_split(np.array(series_uids), core_count)]
     gpus = []
