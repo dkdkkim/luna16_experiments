@@ -173,7 +173,7 @@ class BalancedDistributedSampler(data.sampler.Sampler[T_co]):
             # indices = list(range(len(self.dataset)))  # type: ignore[arg-type]
 
         indices = list()
-        for i in range(0,self.balanced_max,self.num_replicas):
+        for i in trange(0,self.balanced_max,self.num_replicas, desc="Balance Batch Sampling..."):
             for cls in cur_class_dataset:
                 indices += cur_class_dataset[cls][i:i+self.num_replicas]
 
